@@ -1,8 +1,15 @@
-﻿import React from "react";
+﻿import React, {Component} from "react";
 
-export default () => (
-    <div>
-        List Appointments
-    </div>
-);
+class ListAppointments extends Component {
+    render() {
+        return(
+            <div>
+                List Appointments
+            </div>
+        );
+    }
+}
+
+
+export default ListAppointments;
 

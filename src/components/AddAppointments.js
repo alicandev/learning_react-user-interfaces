@@ -1,8 +1,14 @@
-﻿import React from "react";
+﻿import React, {Component} from "react";
 
-export default () => (
-    <div>
-        Add Appointments
-    </div>
-);
+class AddAppointments extends Component {
+    render() {
+        return(
+            <div>
+                Add Appointments
+            </div>
+        );
+    }
+}
+
+export default AddAppointments;
 
