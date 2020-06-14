@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import '../css/App.css';
+import ListAppointments from "./ListAppointments";
+import SearchAppointments from "./SearchAppointments";
+import AddAppointments from "./AddAppointments";
 
 const App = () => (
     <main className="page bg-white" id="petratings">
@@ -7,9 +10,9 @@ const App = () => (
             <div className="row">
                 <div className="col-md-12 bg-white">
                     <div className="container">
-                        <div>Add Appointments</div>
-                        <div>Search Appointments</div>
-                        <div>List Appointments</div>
+                        <AddAppointments />
+                        <SearchAppointments />
+                        <ListAppointments />
                     </div>
                 </div>
             </div>
