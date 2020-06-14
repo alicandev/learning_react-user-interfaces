@@ -8,9 +8,25 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            myName: 'Alican'
+            myName: 'Alican',
+            myAppointments: []
         }
     }
+    
+    componentDidMount() {
+        fetch('./data.json')
+            .then(response => response.json())
+            .then(result => {
+                const appointments = result.map(item => {
+                    return item;
+                });
+                this.setState({
+                    myAppointments: appointments
+                });
+            });
+
+    }
+    
     render() {
         return (
             <main className="page bg-white" id="petratings">
