@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import '../css/App.css';
 
-import ListAppointments from "./ListAppointments";
-import SearchAppointments from "./SearchAppointments";
-import AddAppointments from "./AddAppointments";
+import ListAppointments from './ListAppointments';
+import SearchAppointments from './SearchAppointments';
+import AddAppointments from './AddAppointments';
+
+import { without } from 'lodash';
 
 class App extends Component {
     constructor() {
@@ -12,6 +14,17 @@ class App extends Component {
             myAppointments: [],
             lastIndex: 0
         }
+        // we must do this binding in order for `this` keyword inside the deleteAppointments method to refer to the
+        // component rather than the method itself.
+        this.deleteAppointment = this.deleteAppointment.bind(this);
+    }
+    
+    deleteAppointment(appointment) {
+        this.setState({
+            // without comes from the loadash library. it takes in a list of items and an item, then it substracts the 
+            // item from the item list.
+            myAppointments: without(this.state.myAppointments, appointment)
+        });
     }
     
     componentDidMount() {
@@ -27,23 +40,24 @@ class App extends Component {
             });
     }
     
-    render() {
-        return (
-            <main className="page bg-white" id="petratings">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12 bg-white">
-                            <div className="container">
-                                <AddAppointments />
-                                <SearchAppointments />
-                                <ListAppointments appointments={this.state.myAppointments}/>
-                            </div>
+    render = () => (
+        <main className="page bg-white" id="petratings">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-12 bg-white">
+                        <div className="container">
+                            <AddAppointments />
+                            <SearchAppointments />
+                            <ListAppointments 
+                                appointments={this.state.myAppointments}
+                                deleteAppointment={this.deleteAppointment}
+                            />
                         </div>
                     </div>
                 </div>
-            </main>
-        );
-    }
+            </div>
+        </main>
+    );
 }
 
 export default App;
