@@ -24,6 +24,7 @@ class App extends Component {
         this.toggleForm = this.toggleForm.bind(this);
         this.addAppointment = this.addAppointment.bind(this);
         this.changeOrder = this.changeOrder.bind(this);
+        this.searchAppointments = this.searchAppointments.bind(this);
     }
     
     addAppointment(apt) {
@@ -49,10 +50,11 @@ class App extends Component {
     }
     
     changeOrder(order, dir) {
-        this.setState({
-            orderBy: order,
-            orderDir: dir
-        })
+        this.setState({orderBy: order, orderDir: dir})
+    }
+    
+    searchAppointments(e) {
+        this.setState({queryText: e.target.value});
     }
     
     componentDidMount() {
@@ -98,6 +100,7 @@ class App extends Component {
                                     orderBy={this.state.orderBy}
                                     orderDir={this.state.orderDir}
                                     changeOrder={this.changeOrder}
+                                    searchAppointments={this.searchAppointments}
                                 />
                                 <ListAppointments 
                                     appointments={filteredAppointments}

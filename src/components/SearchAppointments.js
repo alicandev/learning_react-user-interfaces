@@ -10,6 +10,8 @@ class SearchAppointments extends Component {
                         type="text"
                         className="form-control"
                         aria-label="Search Appointments"
+                        value={this.props.queryText}
+                        onChange={this.props.searchAppointments}
                     />
                     
                     <div className="input-group-append">
