@@ -13,12 +13,25 @@ class App extends Component {
         this.state = {
             myAppointments: [],
             formDisplay: false,
+            orderBy: 'petName',
+            orderDir: 'asc',
             lastIndex: 0
         }
         // we must do this binding in order for `this` keyword inside the deleteAppointments method to refer to the
         // component rather than the method itself.
         this.deleteAppointment = this.deleteAppointment.bind(this);
         this.toggleForm = this.toggleForm.bind(this);
+        this.addAppointment = this.addAppointment.bind(this);
+    }
+    
+    addAppointment(apt) {
+        let tempApts = this.state.myAppointments;
+        apt.aptId = this.state.lastIndex;
+        tempApts.unshift(apt);
+        this.setState({
+            myAppointments: tempApts,
+            lastIndex: this.state.lastIndex + 1
+        });
     }
     
     deleteAppointment(appointment) {
@@ -46,27 +59,45 @@ class App extends Component {
             });
     }
     
-    render = () => (
-        <main className="page bg-white" id="petratings">
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-12 bg-white">
-                        <div className="container">
-                            <AddAppointments 
-                                formDisplay={this.state.formDisplay}
-                                toggleForm={this.toggleForm}
-                            />
-                            <SearchAppointments />
-                            <ListAppointments 
-                                appointments={this.state.myAppointments}
-                                deleteAppointment={this.deleteAppointment}
-                            />
+    render() {
+        let order;
+        let filteredAppointments = this.state.myAppointments;
+        if (this.state.orderDir = 'asc') {
+            order = 1;
+        } else {
+            order = -1;
+        }
+        filteredAppointments.sort((a,b) => {
+            if(a[this.state.orderBy].toLowerCase() < b[this.state.orderBy].toLowerCase()) {
+                return -1 * order;
+            } else {
+                return 1 * order;
+            }
+        });
+        
+        return(
+            <main className="page bg-white" id="petratings">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12 bg-white">
+                            <div className="container">
+                                <AddAppointments 
+                                    formDisplay={this.state.formDisplay}
+                                    toggleForm={this.toggleForm}
+                                    addAppointment={this.addAppointment}
+                                />
+                                <SearchAppointments />
+                                <ListAppointments 
+                                    appointments={this.state.myAppointments}
+                                    deleteAppointment={this.deleteAppointment}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
-    );
+            </main>
+        )
+    }
 }
 
 export default App;

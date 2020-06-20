@@ -1,25 +1,40 @@
 ﻿import React, { Component } from 'react';
 import { FaPlus } from 'react-icons/fa';
 
+const emptyState = {
+    petName: '',
+    ownerName: '',
+    aptDate: '',
+    aptTime: '',
+    aptNotes: ''
+}
+
 class AddAppointments extends Component {
     constructor() {
         super();
-        this.state = {
-            petName: '',
-            ownerName: '',
-            aptDate: '',
-            aptTime: '',
-            aptNotes: ''
-        }
+        this.state = emptyState;
         this.handleChange = this.handleChange.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
     }
     
     handleChange(e) {
-        const target = e.target;
-        const value = target.value;
-        const name = target.name;
         //interesting syntax to target the correct field of the state
-        this.setState({[name]: value});
+        this.setState({[e.target.name]: e.target.value});
+    }
+    
+    handleAdd(e) {
+        e.preventDefault();
+        
+        this.props.addAppointment({
+            petName: this.state.petName,
+            ownerName: this.state.ownerName,
+            aptDate: this.state.aptDate + ' ' + this.state.aptTime,
+            aptNotes: this.state.aptNotes
+        });
+        
+        this.setState(emptyState);
+        
+        this.props.toggleForm();
     }
     
     render() {
@@ -36,7 +51,11 @@ class AddAppointments extends Component {
                 </div>
 
                 <div className="card-body">
-                    <form id="aptForm" noValidate>
+                    <form 
+                        id="aptForm" 
+                        noValidate
+                        onSubmit={this.handleAdd}
+                    >
                         <div className="form-group form-row">
                             <label
                                 className="col-md-2 col-form-label text-md-right"
