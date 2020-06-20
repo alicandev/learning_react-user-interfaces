@@ -15,6 +15,7 @@ class App extends Component {
             formDisplay: false,
             orderBy: 'petName',
             orderDir: 'asc',
+            queryText: 'ba',
             lastIndex: 0
         }
         // we must do this binding in order for `this` keyword inside the deleteAppointments method to refer to the
@@ -69,19 +70,18 @@ class App extends Component {
     
     render() {
         let order;
-        let filteredAppointments = this.state.myAppointments;
-        if (this.state.orderDir === 'asc') {
-            order = 1;
-        } else {
-            order = -1;
-        }
-        filteredAppointments.sort((a,b) => {
-            if(a[this.state.orderBy].toLowerCase() < b[this.state.orderBy].toLowerCase()) {
-                return -1 * order;
-            } else {
-                return 1 * order;
-            }
-        });
+        let appointments = this.state.myAppointments;
+        this.state.orderDir === 'asc' ? order = 1 : order = -1;
+        let filteredAppointments = 
+            appointments.sort((a,b) =>
+                a[this.state.orderBy].toLowerCase() > b[this.state.orderBy].toLowerCase() 
+                    ? order 
+                    : -1 * order
+            ).filter(item => 
+                item['petName'].toLowerCase().includes(this.state.queryText.toLowerCase())
+                || item['ownerName'].toLowerCase().includes(this.state.queryText.toLowerCase())
+                || item['aptNotes'].toLowerCase().includes(this.state.queryText.toLowerCase())
+            );
         
         return(
             <main className="page bg-white" id="petratings">
@@ -100,7 +100,7 @@ class App extends Component {
                                     changeOrder={this.changeOrder}
                                 />
                                 <ListAppointments 
-                                    appointments={this.state.myAppointments}
+                                    appointments={filteredAppointments}
                                     deleteAppointment={this.deleteAppointment}
                                 />
                             </div>
@@ -108,7 +108,7 @@ class App extends Component {
                     </div>
                 </div>
             </main>
-        )
+        );
     }
 }
 
