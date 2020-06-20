@@ -5,7 +5,7 @@ import ListAppointments from './ListAppointments';
 import SearchAppointments from './SearchAppointments';
 import AddAppointments from './AddAppointments';
 
-import { without } from 'lodash';
+import {findIndex, without} from 'lodash';
 
 class App extends Component {
     constructor() {
@@ -15,7 +15,7 @@ class App extends Component {
             formDisplay: false,
             orderBy: 'petName',
             orderDir: 'asc',
-            queryText: 'ba',
+            queryText: '',
             lastIndex: 0
         }
         // we must do this binding in order for `this` keyword inside the deleteAppointments method to refer to the
@@ -25,6 +25,7 @@ class App extends Component {
         this.addAppointment = this.addAppointment.bind(this);
         this.changeOrder = this.changeOrder.bind(this);
         this.searchAppointments = this.searchAppointments.bind(this);
+        this.updateInfo = this.updateInfo.bind(this);
     }
     
     addAppointment(apt) {
@@ -70,6 +71,13 @@ class App extends Component {
             });
     }
     
+    updateInfo(name, value, id) {
+        let appointments = this.state.myAppointments;
+        let index = findIndex(this.state.myAppointments, {aptId: id});
+        appointments[index][name] = value;
+        this.setState({myAppointments: appointments});
+    }
+    
     render() {
         let order;
         let appointments = this.state.myAppointments;
@@ -105,6 +113,7 @@ class App extends Component {
                                 <ListAppointments 
                                     appointments={filteredAppointments}
                                     deleteAppointment={this.deleteAppointment}
+                                    updateInfo={this.updateInfo}
                                 />
                             </div>
                         </div>
